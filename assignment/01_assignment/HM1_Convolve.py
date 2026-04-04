@@ -43,17 +43,17 @@ def convol_with_Toeplitz_matrix(img, kernel):
     padding_img = padding(img, 1, "zeroPadding")
 
     #build the Toeplitz matrix and compute convolution
-    img_flat = padding_img.reshape(-1)
+    img_flat = padding_img.flatten()
     toeplitz = np.zeros((36,64))
-    i, j = np.meshgrid(np.arange(6), np.arange(6))
-    u, v = np.meshgrid(np.arange(3), np.arange(3))
+    i, j = np.meshgrid(np.arange(6), np.arange(6), indexing='ij')
+    u, v = np.meshgrid(np.arange(3), np.arange(3), indexing='ij')
     u = u.reshape(-1)
     v = v.reshape(-1)
     r = (i.reshape(-1,1) + u.reshape(1,-1))
     c = (j.reshape(-1,1) + v.reshape(1,-1))
     indices = 8 * r + c
-    kernel_flat = kernel.reshape(-1)
-    toeplitz[np.arange(36)[:,None], indices] = kernel_flat[None,:]
+    kernel_flat = kernel.flatten()
+    toeplitz[np.arange(36)[:,None], indices] = kernel_flat
     output = toeplitz @ img_flat
     output = output.reshape(6,6)
     return output

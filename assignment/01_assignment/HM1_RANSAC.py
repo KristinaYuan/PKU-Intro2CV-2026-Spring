@@ -23,7 +23,7 @@ if __name__ == "__main__":
     # sample points group
     N = noise_points.shape[0]
     rng = np.random.default_rng()
-    keys = rng.random((11, N))
+    keys = rng.random((sample_time, N))
     sampled_idx = np.argsort(keys, axis=1)[:, :3]
     # estimate the plane with sampled points group
     sampled_pts = noise_points[sampled_idx]

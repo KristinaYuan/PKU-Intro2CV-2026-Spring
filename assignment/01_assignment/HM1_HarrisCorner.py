@@ -23,15 +23,18 @@ def corner_response_function(input_img, window_size, alpha, threshold):
     # for detials of corner_response_function, please refer to the slides.
 
     padding_img = padding(input_img, window_size//2, "replicatePadding")
-    x_grad = Sobel_filter_x(padding_img)
-    y_grad = Sobel_filter_y(padding_img)
+    x_grad = Sobel_filter_x(input_img)
+    y_grad = Sobel_filter_y(input_img)
     Ixx = x_grad * x_grad
     Iyy = y_grad * y_grad
     Ixy = x_grad * y_grad
     window = np.ones((window_size, window_size), dtype=float)
-    Sxx = convolve(Ixx, window)
-    Syy = convolve(Iyy, window)
-    Sxy = convolve(Ixy, window)
+    padding_Ixx = padding(Ixx, window_size//2, "replicatePadding")
+    padding_Iyy = padding(Iyy, window_size//2, "replicatePadding")
+    padding_Ixy = padding(Ixy, window_size//2, "replicatePadding")
+    Sxx = convolve(padding_Ixx, window)
+    Syy = convolve(padding_Iyy, window)
+    Sxy = convolve(padding_Ixy, window)
     det = Sxx * Syy - Sxy * Sxy
     trace = Sxx + Syy
     R = det - alpha * (trace ** 2)
